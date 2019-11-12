@@ -23,7 +23,6 @@ public class MainPageController {
     @GetMapping
     public String mainPage(Map<String, Object> model) {
         User users = userRepo.findByEmail("test@mail.ru");
-        model.put("users", users);
         return "main";
     }
 }
