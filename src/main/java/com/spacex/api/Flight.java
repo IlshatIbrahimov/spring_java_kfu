@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.String.format;
 
 public class Flight {
@@ -22,6 +25,16 @@ public class Flight {
         Flight flight = new Flight();
         flight.initInfo(flightId);
         return flight;
+    }
+
+    public static List<Flight> getAllFlights(){
+        List<Flight> allFlights = new ArrayList<>();
+        for (int i = 1; i <= Integer.parseInt(getData("latest").get("flight_number").toString()); i++) {
+            Flight flight = new Flight();
+            flight.initInfo(String.valueOf(i));
+            allFlights.add(flight);
+        }
+        return allFlights;
     }
 
     private void initInfo(String flightId){
