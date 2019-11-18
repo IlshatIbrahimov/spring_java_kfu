@@ -17,11 +17,17 @@ public class SignUpServiceImpl implements SignUpService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void signUp(SignUpForm form) {
+    public boolean signUp(SignUpForm form) {
         User user = User.builder()
                 .email(form.getEmail())
                 .passwordHash(passwordEncoder.encode(form.getPassword()))
                 .build();
-        usersRepository.save(user);
+
+        if (usersRepository.findByEmail(form.getEmail()) != null)
+            return false;
+        else {
+            usersRepository.save(user);
+            return true;
+        }
     }
 }

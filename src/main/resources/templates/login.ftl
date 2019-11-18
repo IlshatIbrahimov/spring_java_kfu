@@ -2,7 +2,7 @@
 <html lang="RU">
 <head>
     <meta charset="UTF-8">
-    <title>SpaceX</title>
+    <title>SpaceX Log In</title>
     <!--    CSS  -->
     <link rel="stylesheet" href="css/login.css">
     <!--    Google Fonts-->
@@ -29,7 +29,7 @@
                     </div>
                 </li>
                 <li class="password_input">
-                    <input type="submit" name="password" class="bi" value="Войти">
+                    <input type="submit" name="" class="bi" value="Log In">
                 </li>
             </ul>
         </form>
