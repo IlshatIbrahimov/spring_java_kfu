@@ -32,6 +32,9 @@
                 <li class="password_input">
                     <input type="submit" name="" class="bi" value="Sign Up">
                 </li>
+                <#if errorMessage>
+                    ${errorMessage}
+                </#if>
             </ul>
         </form>
     </div>

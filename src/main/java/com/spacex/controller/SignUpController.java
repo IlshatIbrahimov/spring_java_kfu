@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -19,16 +20,16 @@ public class SignUpController {
 
     @PreAuthorize("permitAll()")
     @PostMapping
-    public RedirectView signUpUser(SignUpForm form) {
+    public ModelAndView signUpUser(SignUpForm form) {
 
         RedirectView redirectSuccess = new RedirectView("/login");
         RedirectView redirectFailure = new RedirectView("/login?error");
         if (service.signUp(form)) {
-            return redirectSuccess;
+            return new ModelAndView("redirect:/login");
         } else {
-            redirectFailure.addStaticAttribute("errorMessage",
-                    "User with this email already exists!");
-            return redirectFailure;
+//            redirectFailure.addStaticAttribute("errorMessage",
+//                    "User with this email already exists!");
+            return new ModelAndView("redirect:" + "welcome", "errorMessage", "User with this email already exists!");
         }
 
     }
