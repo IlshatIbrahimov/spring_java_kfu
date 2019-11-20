@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>SpaceX</title>
     <!--    CSS  -->
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
     <!--    Google Fonts-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <!--    Bootstrap-->
@@ -25,12 +25,20 @@
 <div class="wrapper">
     <div class="container">
         <div class="content-container">
-            <div class="content">
-                <div class="image"><img src="${flight.getImageUrl()}" alt=""
-                                        class="flight_img"></div>
-                <div class="info">
-                    <span class="flight_name">${flight.getName()}</span>
-                    ${flight.getDescription()}
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="image">
+                            <img src="${flight.getImageUrl()}" alt=""
+                                 class="flight_img">
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="info">
+                            <span class="flight_name">${flight.flightName}</span>
+                            ${flight.description}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,28 +52,27 @@
                     <tbody>
                     <tr>
                         <th scope="row">Flight Number</th>
-                        <td>${flight.getNumber()}</td>
+                        <td>${flight.flightNumber}</td>
                     </tr>
                     <tr>
                         <th scope="row">Rocket</th>
-                        <td>${flight.getRocketName()}</td>
+                        <td>${flight.rocketName}</td>
                     </tr>
                     <tr>
                         <th scope="row">Launch Date</th>
-                        <td>${flight.getLaunchDate()}</td>
+                        <td>${flight.launchDate}</td>
                     </tr>
                     <tr>
                         <th scope="row">Launch Success</th>
-                        <#if flight.getLaunchSuccess() == "true">
+                        <#if flight.launchSuccess == "true">
                             <td>Success</td>
-                        <#else>
+                        <#else >
                             <td>Fail</td>
                         </#if>
-
                     </tr>
                     <tr>
                         <th scope="row">Wikipedia</th>
-                        <td><a href="${flight.getWikipedia()}">Click</a></td>
+                        <td><a href="${flight.wikipedia}">Click</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -78,7 +85,7 @@
             <div class="content">
                 <div style="text-align: center; margin-bottom: 40px;">YouTube Launch Video</div>
                 <iframe width="100%" height="550px"
-                        src="https://www.youtube.com/embed/VshdafZvwrg">
+                        src="https://www.youtube.com/embed/${flight.videoLink}">
                 </iframe>
             </div>
         </div>

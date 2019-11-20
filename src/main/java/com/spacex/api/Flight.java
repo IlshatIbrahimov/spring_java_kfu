@@ -4,8 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -18,33 +20,35 @@ import static java.lang.String.format;
 @Data
 public class Flight {
 
-    private String name;
+    private String flightNumber;
+    private String flightName;
     private String description;
     private String launchDate;
     private String rocketName;
     private String launchSuccess;
     private String wikipedia;
     private String videoLink;
-    private String number;
+    private String missionPatchUrl;
     private String imageUrl;
+
 
     public static Flight getFlight(String flightId) {
         Flight flight = new Flight();
         flight.initInfo(flightId);
+        String[] images = getData(flightId).get("links").getAsJsonObject().get("flickr_images").toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "").split(",");
+        flight.imageUrl = getImage(images);
         return flight;
     }
 
-    public static Flight getLatestFlight() {
-        Flight flight = new Flight();
-        flight.initInfo("23");
-        return flight;
+    public static Flight getFlight(int flightId) {
+        return getFlight(String.valueOf(flightId));
     }
 
     public static List<Flight> getAllFlights() {
         List<Flight> allFlights = new ArrayList<>();
         for (int i = 1; i <= Integer.parseInt(getData("latest").get("flight_number").toString()); i++) {
-            Flight flight = new Flight();
-            flight.initInfo(String.valueOf(i));
+            Flight flight = getFlight(i);
+            flight.imageUrl = null;
             allFlights.add(flight);
         }
         return allFlights;
@@ -52,19 +56,16 @@ public class Flight {
 
     private void initInfo(String flightId) {
         JsonObject data = getData(flightId);
-        name = data.get("mission_name").toString().replace("\"", "");
-        description = data.get("details").toString().replace("\"", "");
-        launchDate = data.get("launch_date_local").toString().replace("\"", "");
-        rocketName = data.get("rocket").getAsJsonObject().get("rocket_name").toString().replace("\"", "");
-        launchSuccess = data.get("launch_success").toString().replace("\"", "");
-        wikipedia = data.get("links").getAsJsonObject().get("wikipedia").toString().replace("\"", "");
-        videoLink = data.get("links").getAsJsonObject().get("video_link").toString().replace("\"", "");
-        number = data.get("flight_number").toString().replace("\"", "");
-        imageUrl = data.getAsJsonObject("links").getAsJsonArray("flickr_images").get(0).toString().replace("\"", "");
-    }
-
-    private void initInfo(int flightId) {
-        initInfo(String.valueOf(flightId));
+        flightNumber = data.get("flight_number").toString();
+        flightName = data.get("mission_name").toString().replaceAll("\"", "");
+        description = data.get("details").toString();
+        description = description.substring(1, description.length() - 1);
+        launchDate = data.get("launch_date_local").toString().replaceAll("\"", "");
+        rocketName = data.get("rocket").getAsJsonObject().get("rocket_name").toString().replaceAll("\"", "");
+        launchSuccess = data.get("launch_success").toString();
+        wikipedia = data.get("links").getAsJsonObject().get("wikipedia").toString().replaceAll("\"", "");
+        videoLink = data.get("links").getAsJsonObject().get("youtube_id").toString().replaceAll("\"", "");
+        missionPatchUrl = data.get("links").getAsJsonObject().get("mission_patch_small").toString().replaceAll("\"", "");
     }
 
     private static JsonObject getData(String dataId) {
@@ -81,6 +82,46 @@ public class Flight {
             e.printStackTrace();
         }
         return res;
+    }
+
+    private static String getImage(String[] images) {
+        String image = "";
+        int minWidth = -1;
+        int minWidthId = 0;
+        try {
+            for (int i = 0; i < images.length; i++) {
+                URL url = new URL(images[i]);
+                BufferedImage bi = ImageIO.read(url);
+//                if (bi.getHeight() < minHeight) {
+//                    minHeight = bi.getHeight();
+//                    minHeightId = i;
+//                }
+//                if (bi.getHeight() < bi.getWidth()) {
+//                    image = images[i];
+//                    break;
+//                }
+
+                if (minWidth == -1) {
+                    minWidth = bi.getWidth();
+                    minWidthId = i;
+                    continue;
+                }
+
+                if (bi.getWidth() < minWidth) {
+                    minWidth = bi.getWidth();
+                    minWidthId = i;
+                }
+
+                if (bi.getWidth() < bi.getHeight()) {
+                    return images[i];
+                }
+            }
+            return images[minWidthId];
+        } catch (IOException e) {
+            image = "https://www.doz.com/cms/wp-content/uploads/2015/03/spacex-logo.jpg";
+            return image;
+        }
+
     }
 
 }

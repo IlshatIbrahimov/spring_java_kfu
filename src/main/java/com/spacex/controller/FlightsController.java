@@ -1,5 +1,6 @@
 package com.spacex.controller;
 
+import com.spacex.api.Flight;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +20,10 @@ public class FlightsController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{flight-id}")
-    public String getFlightPage(Model model, @PathVariable("flight-id") Long flightId) {
-        model.addAttribute("flightId", flightId);
-        return "flight";
+    public String getFlightPage(Model model, @PathVariable("flight-id") int flightId) {
+        Flight flight = Flight.getFlight(flightId);
+        model.addAttribute("flight", flight);
+        return "main";
     }
 
 }

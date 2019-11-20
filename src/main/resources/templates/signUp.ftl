@@ -16,7 +16,7 @@
     <div class="form">
         <form action="/signUp" method="POST">
             <ul>
-                <li class="login_text">SpaceX</li>
+                <a href="/"><li class="login_text">SpaceX</li></a>
                 <li class="login_input">
                     <div>
                         <span class="info_text">Введите вашу почту</span>
@@ -32,9 +32,11 @@
                 <li class="password_input">
                     <input type="submit" name="" class="bi" value="Sign Up">
                 </li>
-                <#if errorMessage>
-                    ${errorMessage}
-                </#if>
+                <li>
+                    <#if error??>
+                        ${error}
+                    </#if>
+                </li>
             </ul>
         </form>
     </div>

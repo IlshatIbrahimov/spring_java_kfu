@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>SpaceX</title>
     <!--    CSS  -->
-    <link rel="stylesheet" href="../../static/css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
     <!--    Google Fonts-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <!--    Bootstrap-->
@@ -15,27 +15,30 @@
 
 <div class="container">
     <nav class="navbar navbar-expand-lg">
-        <img src="https://utmagazine.ru/uploads/content/logo.jpg" alt="" class="spacex_icon">
+        <a href="/"><img src="https://utmagazine.ru/uploads/content/logo.jpg" alt="" class="spacex_icon"></a>
         <div class="nav-bar">
-            <a href="" style="float: right">Sign Up</a>
-            <a href="" style="float: right">Log in</a>
+            <a href="/signUp" style="float: right">Sign Up</a>
+            <a href="/login" style="float: right">Log in</a>
         </div>
     </nav>
 </div>
 <div class="wrapper">
     <div class="container">
         <div class="content-container">
-            <div class="content">
-                <div class="image"><img src="https://farm5.staticflickr.com/4866/39745612523_14270b4b9d_o.jpg" alt=""
-                                        class="flight_img"></div>
-                <div class="info">
-                    <span class="flight_name">Iridium NEXT Mission 8</span>
-                    SpaceX's first flight of 2019 will be the eighth and final launch of its planned Iridium flights.
-                    Delivering 10 satellites to low earth orbit, this brings the total up to 75 and completes the
-                    Iridium
-                    NEXT cons
-                    tellation. This mission launches from SLC-4E at Vandenberg AFB. The booster is expected to land on
-                    JRTI.
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="image">
+                            <img src="https://live.staticflickr.com/65535/49051988746_1a97e38ca8_o.jpg" alt=""
+                                 class="flight_img">
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="info">
+                            <span class="flight_name">Starlink</span>
+                            <span class="flight_name">This mission will launch the first batch of Starlink version 1.0 satellites, from SLC-40, Cape Canaveral AFS. They are expected to contribute to the 550 km x 53° shell. It is the second Starlink launch overall. Starlink is a low Earth orbit broadband internet constellation developed and owned by SpaceX which will eventually consist of nearly 12 000 satellites and will provide low latency internet service to ground terminals around the world. The booster for this mission is expected to land on OCISLY.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,23 +52,27 @@
                     <tbody>
                     <tr>
                         <th scope="row">Flight Number</th>
-                        <td>74</td>
+                        <td>${flight.flightNumber}</td>
                     </tr>
                     <tr>
                         <th scope="row">Rocket</th>
-                        <td>Falcon 9</td>
+                        <td>${flight.rocketName}</td>
                     </tr>
                     <tr>
                         <th scope="row">Launch Date</th>
-                        <td>2019-01-11T07:31:00-08:00</td>
+                        <td>${flight.launchDate}</td>
                     </tr>
                     <tr>
                         <th scope="row">Launch Success</th>
-                        <td>True</td>
+                        <#if flight.launchSuccess == "true">
+                        <td>Success</td>
+                        <#else >
+                        <td>Fail</td>
+                    </#if>
                     </tr>
                     <tr>
                         <th scope="row">Wikipedia</th>
-                        <td><a href="https://en.wikipedia.org/wiki/Iridium_satellite_constellation#Next-generation_constellation">Click</a></td>
+                        <td><a href="${flight}">Click</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -78,7 +85,7 @@
             <div class="content">
                 <div style="text-align: center; margin-bottom: 40px;">YouTube Launch Video</div>
                 <iframe width="100%" height="550px"
-                        src="https://www.youtube.com/embed/VshdafZvwrg">
+                        src="https://www.youtube.com/embed/${flight.videoLink}">
                 </iframe>
             </div>
         </div>
