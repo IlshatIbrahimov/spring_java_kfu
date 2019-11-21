@@ -17,8 +17,13 @@
     <nav class="navbar navbar-expand-lg">
         <a href="/"><img src="https://utmagazine.ru/uploads/content/logo.jpg" alt="" class="spacex_icon"></a>
         <div class="nav-bar">
-            <a href="/signUp" style="float: right">Sign Up</a>
-            <a href="/login" style="float: right">Log in</a>
+            <#if auth??>
+                <a href="/logout" style="float: right">Log out</a>
+                <a href="/flights" style="float: right">All flights</a>
+            <#else>
+                <a href="/signUp" style="float: right">Sign Up</a>
+                <a href="/login" style="float: right">Log in</a>
+            </#if>
         </div>
     </nav>
 </div>

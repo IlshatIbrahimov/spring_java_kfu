@@ -16,6 +16,7 @@ public class MainController {
     public String main(Model model, Authentication authentication) {
         Flight flight = Flight.getFlight("latest");
         model.addAttribute("flight", flight);
+        model.addAttribute("auth", authentication);
         return "main";
     }
 

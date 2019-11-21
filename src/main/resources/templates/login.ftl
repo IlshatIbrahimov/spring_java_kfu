@@ -32,7 +32,7 @@
                 <li class="password_input">
                     <input type="submit" name="" class="bi" value="Log In">
                 </li>
-                <li>
+                <li class="password_input" style="text-align: center;">
                     <#if error??>
                         ${error}
                     </#if>
