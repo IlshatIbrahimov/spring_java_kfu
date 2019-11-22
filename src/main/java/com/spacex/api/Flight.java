@@ -73,8 +73,8 @@ public class Flight {
             flight.missionPatchUrl = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("mission_patch_small").toString().replaceAll("\"", "");
             allFlights.add(flight);
         }
-        Collections.reverse(allFlights);
 
+        Collections.reverse(allFlights);
         return allFlights;
     }
 

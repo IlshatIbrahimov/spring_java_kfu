@@ -25,9 +25,10 @@ public class FlightsController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{flight-id}")
-    public String getFlightPage(Model model, @PathVariable("flight-id") int flightId) {
+    public String getFlightPage(Model model, @PathVariable("flight-id") int flightId, Authentication authentication) {
         Flight flight = Flight.getFlight(flightId);
         model.addAttribute("flight", flight);
+        model.addAttribute("auth", authentication);
         return "main";
     }
 
