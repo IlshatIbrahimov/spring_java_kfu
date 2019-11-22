@@ -27,157 +27,28 @@
     </div>
     <div class="wrapper">
 
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
 
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
+        <#list flights as flight>
+            <a href="/flights/${flight.flightNumber}">
+                <div class="flight">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="img-container">
+                                <div class="img">
+                                    <img src="${flight.missionPatchUrl}" alt="">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-7 flight_name">
+                        <div class="col-7 flight_name">
                     <span class="name">
                         ${flight.flightName}
                     </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </#list>
 
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="/flights/${flight.flightNumber}">
-            <div class="flight">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="img-container">
-                            <div class="img">
-                                <img src="${flight.missionPatchUrl}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7 flight_name">
-                    <span class="name">
-                        ${flight.flightName}
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </a>
 
     </div>
 </div>
