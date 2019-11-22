@@ -1,5 +1,6 @@
 package com.spacex.api;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,8 +36,6 @@ public class Flight {
     public static Flight getFlight(String flightId) {
         Flight flight = new Flight();
         flight.initInfo(flightId);
-        String[] images = getData(flightId).get("links").getAsJsonObject().get("flickr_images").toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "").split(",");
-        flight.imageUrl = getImage(images);
         return flight;
     }
 
@@ -46,11 +45,34 @@ public class Flight {
 
     public static List<Flight> getAllFlights() {
         List<Flight> allFlights = new ArrayList<>();
-        for (int i = 1; i <= Integer.parseInt(getData("latest").get("flight_number").toString()); i++) {
-            Flight flight = getFlight(i);
-            flight.imageUrl = null;
+        URL url;
+        HttpURLConnection request;
+        JsonArray res = new JsonArray();
+        try {
+            url = new URL("https://api.spacexdata.com/v3/launches");
+            request = (HttpURLConnection) url.openConnection();
+            request.connect();
+            JsonElement root = JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
+            res = root.getAsJsonArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < 84; i++) {
+            Flight flight = new Flight();
+            flight.flightNumber = res.get(i).getAsJsonObject().get("flight_number").toString();
+            flight.flightName = res.get(i).getAsJsonObject().get("mission_name").toString().replaceAll("\"", "");
+            flight.description = res.get(i).getAsJsonObject().get("details").toString();
+            flight.description = flight.description.substring(1, flight.description.length() - 1);
+            flight.launchDate = res.get(i).getAsJsonObject().get("launch_date_local").toString().replaceAll("\"", "");
+            flight.rocketName = res.get(i).getAsJsonObject().get("rocket").getAsJsonObject().get("rocket_name").toString().replaceAll("\"", "");
+            flight.launchSuccess = res.get(i).getAsJsonObject().get("launch_success").toString();
+            flight.wikipedia = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("wikipedia").toString().replaceAll("\"", "");
+            flight.videoLink = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("youtube_id").toString().replaceAll("\"", "");
+            flight.missionPatchUrl = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("mission_patch_small").toString().replaceAll("\"", "");
             allFlights.add(flight);
         }
+
         return allFlights;
     }
 
@@ -66,6 +88,8 @@ public class Flight {
         wikipedia = data.get("links").getAsJsonObject().get("wikipedia").toString().replaceAll("\"", "");
         videoLink = data.get("links").getAsJsonObject().get("youtube_id").toString().replaceAll("\"", "");
         missionPatchUrl = data.get("links").getAsJsonObject().get("mission_patch_small").toString().replaceAll("\"", "");
+        String[] images = data.get("links").getAsJsonObject().get("flickr_images").toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "").split(",");
+        imageUrl = getImage(images);
     }
 
     private static JsonObject getData(String dataId) {
@@ -83,23 +107,15 @@ public class Flight {
         }
         return res;
     }
-
+    
     private static String getImage(String[] images) {
-        String image = "";
+        String image;
         int minWidth = -1;
         int minWidthId = 0;
         try {
             for (int i = 0; i < images.length; i++) {
                 URL url = new URL(images[i]);
                 BufferedImage bi = ImageIO.read(url);
-//                if (bi.getHeight() < minHeight) {
-//                    minHeight = bi.getHeight();
-//                    minHeightId = i;
-//                }
-//                if (bi.getHeight() < bi.getWidth()) {
-//                    image = images[i];
-//                    break;
-//                }
 
                 if (minWidth == -1) {
                     minWidth = bi.getWidth();
@@ -122,6 +138,10 @@ public class Flight {
             return image;
         }
 
+    }
+
+    public static void main(String[] args) {
+        List<Flight> allFlights = getAllFlights();
     }
 
 }
