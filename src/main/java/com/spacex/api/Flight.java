@@ -36,9 +36,7 @@ public class Flight {
 
     public static Flight getFlight(String flightId) {
         Flight flight = new Flight();
-        JsonObject data = getData(flightId);
-        flight.initInfo(data);
-        flight.imageUrl = getImage(data);
+        flight.initInfo(flightId);
         return flight;
     }
 
@@ -63,8 +61,16 @@ public class Flight {
 
         for (int i = 0; i < 84; i++) {
             Flight flight = new Flight();
-            JsonObject data = res.get(i).getAsJsonObject();
-            flight.initInfo(data);
+            flight.flightNumber = res.get(i).getAsJsonObject().get("flight_number").toString();
+            flight.flightName = res.get(i).getAsJsonObject().get("mission_name").toString().replaceAll("\"", "");
+            flight.description = res.get(i).getAsJsonObject().get("details").toString();
+            flight.description = flight.description.substring(1, flight.description.length() - 1);
+            flight.launchDate = res.get(i).getAsJsonObject().get("launch_date_local").toString().replaceAll("\"", "");
+            flight.rocketName = res.get(i).getAsJsonObject().get("rocket").getAsJsonObject().get("rocket_name").toString().replaceAll("\"", "");
+            flight.launchSuccess = res.get(i).getAsJsonObject().get("launch_success").toString();
+            flight.wikipedia = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("wikipedia").toString().replaceAll("\"", "");
+            flight.videoLink = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("youtube_id").toString().replaceAll("\"", "");
+            flight.missionPatchUrl = res.get(i).getAsJsonObject().get("links").getAsJsonObject().get("mission_patch_small").toString().replaceAll("\"", "");
             allFlights.add(flight);
         }
 
@@ -72,7 +78,8 @@ public class Flight {
         return allFlights;
     }
 
-    private void initInfo(JsonObject data) {
+    private void initInfo(String flightId) {
+        JsonObject data = getData(flightId);
         flightNumber = data.get("flight_number").toString();
         flightName = data.get("mission_name").toString().replaceAll("\"", "");
         description = data.get("details").toString();
@@ -83,6 +90,8 @@ public class Flight {
         wikipedia = data.get("links").getAsJsonObject().get("wikipedia").toString().replaceAll("\"", "");
         videoLink = data.get("links").getAsJsonObject().get("youtube_id").toString().replaceAll("\"", "");
         missionPatchUrl = data.get("links").getAsJsonObject().get("mission_patch_small").toString().replaceAll("\"", "");
+        String[] images = data.get("links").getAsJsonObject().get("flickr_images").toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "").split(",");
+        imageUrl = getImage(images);
     }
 
     private static JsonObject getData(String dataId) {
@@ -100,9 +109,8 @@ public class Flight {
         }
         return res;
     }
-
-    private static String getImage(JsonObject data) {
-        String[] images = data.get("links").getAsJsonObject().get("flickr_images").toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "").split(",");
+    
+    private static String getImage(String[] images) {
         String image;
         int minWidth = -1;
         int minWidthId = 0;
@@ -132,6 +140,10 @@ public class Flight {
             return image;
         }
 
+    }
+
+    public static void main(String[] args) {
+        List<Flight> allFlights = getAllFlights();
     }
 
 }
